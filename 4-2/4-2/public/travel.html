@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Browse and book global travel experiences tailored to your interests and budget.">
+  <title>Global Travel Experiences</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f8ff;
+      padding: 20px;
+      margin: 0;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .filters {
+      margin-bottom: 20px;
+      background: #fff;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px #0000001a;
+    }
+
+    .filters summary {
+      cursor: pointer;
+      font-size: 1.2em;
+      margin-bottom: 10px;
+    }
+
+    .filter-group {
+      margin: 10px 0;
+    }
+
+    .filter-group label {
+      display: block;
+      margin: 5px 0;
+    }
+
+    .trips-count {
+      margin: 10px 0;
+      font-weight: bold;
+    }
+
+    .trips {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .trip {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px #0000001a;
+      overflow: hidden;
+      transition: transform 0.2s;
+    }
+
+    .trip:hover {
+      transform: scale(1.02);
+    }
+
+    .trip img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .trip-content {
+      padding: 15px;
+    }
+
+    .trip-content h2 {
+      margin: 0;
+      font-size: 1.5em;
+    }
+
+    .trip-meta {
+      display: flex;
+      justify-content: space-between;
+      margin: 10px 0;
+    }
+
+    .price {
+      font-size: 1.2em;
+      color: #2c3e50;
+    }
+
+    .rating {
+      color: #f39c12;
+    }
+
+    .book-button {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      background: #3a8fc5;
+      color: #fff;
+      border: 0;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .book-button:hover {
+      background: #2f78b3;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px #00000033;
+    }
+
+    .tag-dropdown {
+      position: relative;
+      display: inline-block;
+      margin-top: 5px;
+    }
+
+    #tag-dropdown-toggle {
+      background: #3a8fc5;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1em;
+    }
+
+    #tag-dropdown-toggle:hover {
+      background: #2f78b3;
+    }
+
+    .tag-menu {
+      display: none;
+      position: absolute;
+      top: 110%;
+      left: 0;
+      background-color: white;
+      box-shadow: 0 4px 6px #0000001a;
+      z-index: 1;
+      max-height: 150px;
+      overflow-y: auto;
+      width: 200px;
+      padding: 10px;
+      border-radius: 6px;
+    }
+
+    .tag-menu label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .tag-dropdown.open .tag-menu {
+      display: block;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      font-size: 0.9em;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Our Global Travel Experiences</h1>
+
+<section class="filter-section">
+  <details class="filters">
+    <summary>Filter Trips</summary>
+    <div class="filter-group">
+      <label>Price (Max): <input type="number" id="filter-price" min="0" /></label>
+      <label>Length (Max days): <input type="number" id="filter-length" min="0" /></label>
+      </label>
+    </div>
+    <div class="filter-group">
+      <label>Sort by:
+        <select id="filter-sort" aria-label="Sort results">
+          <option value="">None</option>
+          <option value="price-desc">Price (High to Low)</option>
+          <option value="price-asc">Price (Low to High)</option>
+          <option value="length-desc">Duration (Long to Short)</option>
+          <option value="length-asc">Duration (Short to Long)</option>
+        </select>
+      </label>
+    </div>
+          <label>Minimum Rating:
+            <select id="filter-rating" aria-label="Minimum rating filter">
+              <option value="">Any</option>
+              <option value="1">1 star ★</option>
+              <option value="2">2 stars ★★</option>
+              <option value="3">3 stars ★★★</option>
+              <option value="4">4 stars ★★★★</option>
+              <option value="5">5 stars ★★★★★</option>
+            </select>
+          </label>
+        </div>
+        <div class="filter-group">
+          <span>Tags:</span>
+          <div class="tag-dropdown">
+            <button type="button" id="tag-dropdown-toggle" aria-haspopup="listbox" aria-expanded="false">Select Tags ⏷</button>
+            <div id="filter-tags" class="tag-menu" role="listbox"></div>
+          </div>
+        </div>
+      </details>
+    </section>
+
+    <section>
+      <div class="trips-count" id="trips-count">Showing 0 trips</div>
+      <div class="trips" id="trips-container"></div>
+    </section>
+  </main>
+
+  <footer>
+    &copy; 2025 Global Travel Experiences. All rights reserved.
+  </footer>
+
+<script>
+  let allTrips = [];
+
+  async function loadTrips() {
+    const response = await fetch('/data/trips.json');
+    allTrips = await response.json();
+    applyFilters();
+  }
+
+  function applyFilters() {
+    const price = parseFloat(document.getElementById('filter-price').value);
+    const length = parseInt(document.getElementById('filter-length').value);
+    const rating = parseInt(document.getElementById('filter-rating').value);
+    const selectedTags = Array.from(document.querySelectorAll('#filter-tags input:checked')).map(cb => cb.value);
+    const sortValue = document.getElementById('filter-sort').value;
+
+    // Base filtering
+    let baseFiltered = allTrips.filter(trip => {
+      const withinPrice = isNaN(price) || trip.perPerson <= price;
+      const withinLength = isNaN(length) || trip.length <= length;
+      const meetsRating = isNaN(rating) || trip.rating >= rating;
+      return withinPrice && withinLength && meetsRating;
+    });
+
+    // Tag filtering
+    const tripsWithSelectedTags = baseFiltered.filter(trip =>
+      selectedTags.every(tag => trip.tags?.includes(tag))
+    );
+
+    // Update tag options
+    updateTagOptions(tripsWithSelectedTags, selectedTags);
+
+    // Final filtered results
+    let finalFiltered = baseFiltered.filter(trip =>
+      selectedTags.every(tag => trip.tags?.includes(tag))
+    );
+
+    // Sorting
+    switch(sortValue) {
+      case 'price-asc':
+        finalFiltered.sort((a, b) => a.perPerson - b.perPerson);
+        break;
+      case 'price-desc':
+        finalFiltered.sort((a, b) => b.perPerson - a.perPerson);
+        break;
+      case 'length-asc':
+        finalFiltered.sort((a, b) => a.length - b.length);
+        break;
+      case 'length-desc':
+        finalFiltered.sort((a, b) => b.length - a.length);
+        break;
+    }
+
+    renderTrips(finalFiltered);
+  }
+
+  function updateTagOptions(viableTrips, selectedTags) {
+    const tagCounts = new Map();
+
+    viableTrips.forEach(trip => {
+      trip.tags?.forEach(tag => {
+        tagCounts.set(tag, (tagCounts.get(tag) || 0) + 1);
+      });
+    });
+
+    const tagContainer = document.getElementById('filter-tags');
+    tagContainer.innerHTML = '';
+
+    Array.from(tagCounts.entries())
+      .sort(([a], [b]) => a.localeCompare(b))
+      .forEach(([tag, count]) => {
+        const id = `tag-${tag.replace(/\s+/g, '-')}`;
+        const isChecked = selectedTags.includes(tag);
+        tagContainer.innerHTML += `
+          <label>
+            <input type="checkbox" 
+                   value="${tag}" 
+                   id="${id}" 
+                   ${isChecked ? 'checked' : ''}>
+            ${tag} (${count})
+          </label>
+        `;
+      });
+
+    tagContainer.querySelectorAll('input').forEach(input => {
+      input.addEventListener('change', applyFilters);
+    });
+  }
+
+  function renderTrips(trips) {
+    const container = document.getElementById('trips-container');
+    container.innerHTML = '';
+
+    trips.forEach(trip => {
+      const tripEl = document.createElement('article');
+      tripEl.className = 'trip';
+      tripEl.innerHTML = `
+        <img src="/images/${trip.image}" alt="${trip.name}">
+        <div class="trip-content">
+          <h2>${trip.name}</h2>
+          <div class="trip-meta">
+            <div><span>${trip.resort}</span> <span class="rating">${'★'.repeat(trip.rating)}${'☆'.repeat(5 - trip.rating)}</span></div>
+            <div><span class="price">$${trip.perPerson}</span> <span>per person</span></div>
+          </div>
+          <p><strong>Duration:</strong> ${trip.length} days</p>
+          ${trip.description}
+          <form action="/details-page.html" method="GET">
+            <input type="hidden" name="code" value="${trip.code}">
+            <input type="hidden" name="name" value="${trip.name}">
+            <input type="hidden" name="image" value="${trip.image}">
+            <input type="hidden" name="price" value="${trip.perPerson}">
+            <input type="hidden" name="duration" value="${trip.length}">
+            <button type="submit" class="book-button">Book Now</button>
+          </form>
+        </div>
+      `;
+      container.appendChild(tripEl);
+    });
+
+    document.getElementById('trips-count').textContent = `Showing ${trips.length} trip${trips.length !== 1 ? 's' : ''}`;
+  }
+
+  // Event Listeners
+  document.getElementById('filter-price').addEventListener('input', applyFilters);
+  document.getElementById('filter-length').addEventListener('input', applyFilters);
+  document.getElementById('filter-rating').addEventListener('change', applyFilters);
+  document.getElementById('filter-sort').addEventListener('change', applyFilters);
+
+  // Tag dropdown management
+  const tagToggle = document.getElementById('tag-dropdown-toggle');
+  const tagDropdown = document.querySelector('.tag-dropdown');
+  
+  tagToggle.addEventListener('click', (e) => {
+    e.stopPropagation();
+    tagDropdown.classList.toggle('open');
+    tagToggle.setAttribute('aria-expanded', tagDropdown.classList.contains('open'));
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.tag-dropdown')) {
+      tagDropdown.classList.remove('open');
+      tagToggle.setAttribute('aria-expanded', 'false');
+    }
+  });
+
+  // Initial load
+  window.addEventListener('DOMContentLoaded', loadTrips);
+</script>
+
+</body>
+</html>

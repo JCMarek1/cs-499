@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Dawson's Reef - Bhaccasyoniztas Resort</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div id="background">
+        <div id="page">
+            {{> header}}
+            
+            <div id="contents">
+                <div class="box">
+                    <div class="body">
+                        <h1>Dawson's Reef Exploration</h1>
+                        <img src="/images/reef2.jpg" alt="Deep reef exploration at Dawson's Reef" class="full-width">
+                        <div class="trip-details">
+                            <p>Discover hidden depths and mysterious underwater formations. Our 7-day deep reef package includes:</p>
+                            <ul>
+                                <li>Advanced scuba diving expeditions</li>
+                                <li>Submersible tours of deep reef areas</li>
+                                <li>Marine biology lectures</li>
+                            </ul>
+
+                            <div class="booking-options">
+                                <h2>Customize Your Package</h2>
+                                
+                                <div class="option-group">
+                                    <h3>Accommodation Type</h3>
+                                    <select class="room-choice">
+                                        <option value="standard">Deluxe</option>
+                                        <option value="deluxe">Suite</option>
+                                        <option value="villa">First Class</option>
+                                    </select>
+                                </div>
+
+                                <div class="option-group">
+                                    <h3>Diving Options</h3>
+                                    <div class="meal-choices">
+                                        <label>
+                                            <input type="checkbox" name="diving" value="night"> Night Diving Experience
+                                        </label>
+                                        <label>
+                                            <input type="checkbox" name="diving" value="wreck"> Shipwreck Exploration
+                                        </label>
+                                        <label>
+                                            <input type="checkbox" name="diving" value="cave"> Underwater Cave Tour
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="option-group">
+                                    <h3>Additional Options</h3>
+                                    <label>
+                                        <input type="checkbox" name="gear"> Premium Diving Gear Rental (+$299)
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" name="training"> Advanced Diving Certification (+$499)
+                                    </label>
+                                </div>
+
+                                <button class="checkout-button">Proceed to Checkout</button>
+                            </div>
+
+                            <a href="/travel" class="back-button">← Back to All Trips</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{> footer}}
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Packages - Bhaccasyoniztas Resort</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <meta name="description" content="Explore our exclusive travel packages and worldwide adventures at Bhaccasyoniztas Resort">
+</head>
+<body>
+    <div id="background">
+        <div id="page">
+            {{> header}}
+            
+            <main id="contents">
+                <div class="box">
+                    <article class="body">
+                        <h1 class="page-title">Our Global Travel Experiences</h1>
+                        <div class="card-container">
+                            {{#if trips}}
+                                {{#each trips}}
+                                <a href="/trips/{{this.code}}" class="trip-card-link" aria-labelledby="{{this.code}}-title">
+                                    <section class="trip-card">
+                                        <img src="/images/{{this.image}}" alt="{{this.name}} adventure image" class="trip-image">
+                                        <div class="card-content">
+                                            <h2 id="{{this.code}}-title">{{this.name}}</h2>
+                                            <div class="trip-meta">
+                                                <span class="resort">{{this.resort}}</span>
+                                                <span class="duration">{{this.length}} days</span>
+                                                <span class="rating">{{this.rating}}/5 stars</span>
+                                                <span class="price">${{this.perPerson}}/person</span>
+                                            </div>
+                                            <div class="trip-description">
+                                                {{{this.description}}}
+                                            </div>
+                                        </div>
+                                    </section>
+                                </a>
+                                {{/each}}
+                            {{else}}
+                                <p class="no-trips">No travel packages currently available. Please check back later!</p>
+                            {{/if}}
+                        </div>
+                    </article>
+                </div>
+            </main>
+
+            {{> footer}}
+        </div>
+    </div>
+    <!-- Back to Top Button -->
+    <a href="#page" class="back-to-top" aria-label="Back to top">↑</a>
+</body>
+</html>

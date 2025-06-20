@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Trip Details</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      margin: 0;
+      padding: 20px;
+    }
+    .trip-details-container {
+      max-width: 900px;
+      margin: auto;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      padding: 20px;
+    }
+    .trip-header {
+      display: flex;
+      gap: 20px;
+    }
+    .trip-image {
+      width: 300px;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+    .trip-info h1 {
+      margin: 0;
+    }
+    .options {
+      margin-top: 20px;
+    }
+    .options fieldset {
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 10px;
+    }
+    .total {
+      font-weight: bold;
+      font-size: 1.2em;
+      margin-top: 15px;
+    }
+    .book-now {
+      margin-top: 20px;
+      background: #0077cc;
+      color: white;
+      padding: 10px 20px;
+      font-size: 1em;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="trip-details-container">
+    <div class="trip-header">
+      <img src="/images/placeholder.jpg" alt="Trip image" class="trip-image">
+      <div class="trip-info">
+        <h1>Trip Name</h1>
+        <p><strong>Duration:</strong> <span id="tripDuration">0</span> days</p>
+        <p><strong>Base Price:</strong> $<span id="basePrice">0.00</span></p>
+      </div>
+    </div>
+
+    <form class="options" id="tripForm">
+      <fieldset>
+        <legend>Meal Plan</legend>
+        <label><input type="radio" name="mealPlan" value="standard" checked> Standard</label><br>
+        <label><input type="radio" name="mealPlan" value="premium"> Premium (+$200)</label><br>
+        <label><input type="radio" name="mealPlan" value="luxury"> Luxury (+$500)</label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Room Type</legend>
+        <label><input type="radio" name="roomType" value="standard" checked> Standard</label><br>
+        <label><input type="radio" name="roomType" value="deluxe"> Deluxe (+$300)</label><br>
+        <label><input type="radio" name="roomType" value="premium"> Premium (+$800)</label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Extras</legend>
+        <label><input type="checkbox" name="spaPackage"> Spa Package (+$150/day)</label><br>
+        <label><input type="checkbox" name="guidedTours"> Guided Tours (+$100/day)</label><br>
+        <label><input type="checkbox" name="transportation"> Transportation (+$200)</label>
+      </fieldset>
+
+      <div class="total">
+        Total Price: $<span id="totalPrice">0.00</span>
+      </div>
+
+      <button type="submit" class="book-now">Book Now</button>
+    </form>
+  </div>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const tripData = {
+      name: urlParams.get('name') || 'Unknown Trip',
+      image: urlParams.get('image') || 'placeholder.jpg',
+      price: parseFloat(urlParams.get('price')) || 0,
+      duration: parseInt(urlParams.get('duration')) || 0
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+      document.title = `${tripData.name} Details`;
+      document.querySelector('.trip-image').src = `/images/${tripData.image}`;
+      document.querySelector('.trip-info h1').textContent = tripData.name;
+      document.getElementById('tripDuration').textContent = tripData.duration;
+      document.getElementById('basePrice').textContent = tripData.price.toFixed(2);
+
+      function calculateTotal() {
+        let total = tripData.price;
+
+        const mealPlan = document.querySelector('input[name="mealPlan"]:checked').value;
+        if (mealPlan === 'premium') total += 200;
+        if (mealPlan === 'luxury') total += 500;
+
+        const roomType = document.querySelector('input[name="roomType"]:checked').value;
+        if (roomType === 'deluxe') total += 300;
+        if (roomType === 'premium') total += 800;
+
+        if (document.querySelector('input[name="spaPackage"]').checked) {
+          total += 150 * tripData.duration;
+        }
+        if (document.querySelector('input[name="guidedTours"]').checked) {
+          total += 100 * tripData.duration;
+        }
+        if (document.querySelector('input[name="transportation"]').checked) {
+          total += 200;
+        }
+
+        document.getElementById('totalPrice').textContent = total.toFixed(2);
+        return total;
+      }
+
+      // Trigger recalculation on any input change
+      document.querySelectorAll('input').forEach(input => {
+        input.addEventListener('change', calculateTotal);
+      });
+
+      // Initial price display
+      calculateTotal();
+
+      // Handle form submit and redirect
+      document.getElementById('tripForm').addEventListener('submit', e => {
+        e.preventDefault();
+        const total = calculateTotal();
+        const confirmationUrl = `confirmation.html?name=${encodeURIComponent(tripData.name)}&total=${total.toFixed(2)}`;
+        window.location.href = confirmationUrl;
+      });
+    });
+  </script>
+</body>
+</html>

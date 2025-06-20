@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Claire's Reef - Bhaccasyoniztas Resort</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div id="background">
+        <div id="page">
+            {{> header}}
+            
+            <div id="contents">
+                <div class="box">
+                    <div class="body">
+                        <h1>Claire's Reef Discovery</h1>
+                        <img src="/images/reef3.jpg" alt="Vibrant marine life at Claire's Reef" class="full-width">
+                        <div class="trip-details">
+                            <p>Immerse yourself in a biodiverse marine sanctuary. Our 4-day eco-adventure package includes:</p>
+                            <ul>
+                                <li>Guided eco-snorkeling tours</li>
+                                <li>Marine conservation workshops</li>
+                                <li>Organic farm-to-table meals</li>
+                            </ul>
+
+                            <div class="booking-options">
+                                <h2>Customize Your Package</h2>
+                                
+                                <div class="option-group">
+                                    <h3>Accommodation Type</h3>
+                                    <select class="room-choice">
+                                        <option value="standard">Deluxe</option>
+                                        <option value="deluxe">Suite</option>
+                                        <option value="villa">First Class</option>
+                                    </select>
+                                </div>
+
+                                <div class="option-group">
+                                    <h3>Eco Activities</h3>
+                                    <div class="meal-choices">
+                                        <label>
+                                            <input type="checkbox" name="activity" value="turtle"> Sea Turtle Conservation Program
+                                        </label>
+                                        <label>
+                                            <input type="checkbox" name="activity" value="coral"> Coral Restoration Workshop
+                                        </label>
+                                        <label>
+                                            <input type="checkbox" name="activity" value="kayak"> Sustainable Kayaking Tour
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="option-group">
+                                    <h3>Additional Options</h3>
+                                    <label>
+                                        <input type="checkbox" name="donation"> Conservation Donation (+$100)
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" name="photography"> Underwater Photography Session (+$299)
+                                    </label>
+                                </div>
+
+                                <button class="checkout-button">Proceed to Checkout</button>
+                            </div>
+
+                            <a href="/travel" class="back-button">← Back to All Trips</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{> footer}}
+        </div>
+    </div>
+</body>
+</html>

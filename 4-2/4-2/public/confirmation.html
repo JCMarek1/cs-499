@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirm Your Booking</title>
+    <style>
+        .confirmation-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
+
+        .booking-summary {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .date-picker {
+            margin: 20px 0;
+        }
+
+        .price-breakdown {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="confirmation-container">
+        <h1>Confirm Your Booking</h1>
+        
+        <div class="booking-summary">
+            <h2 id="tripTitle"></h2>
+            <div class="date-picker">
+                <label for="bookingDate">Select Travel Date:</label>
+                <input type="date" id="bookingDate" required>
+            </div>
+            
+            <div class="price-breakdown">
+                <h3>Price Breakdown</h3>
+                <p>Subtotal: $<span id="subtotal">0.00</span></p>
+                <p>Tax (10%): $<span id="tax">0.00</span></p>
+                <p>Total: $<span id="totalWithTax">0.00</span></p>
+            </div>
+        </div>
+
+        <button onclick="confirmBooking()" class="book-now-btn">Confirm Booking</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const params = new URLSearchParams(window.location.search);
+            
+            // Display booking details
+            document.getElementById('tripTitle').textContent = 
+                params.get('trip').replace(/-/g, ' ');
+            document.getElementById('subtotal').textContent = params.get('subtotal');
+            document.getElementById('tax').textContent = params.get('tax');
+            document.getElementById('totalWithTax').textContent = params.get('totalWithTax');
+
+            // Set minimum date to today
+            const dateInput = document.getElementById('bookingDate');
+            dateInput.min = new Date().toISOString().split('T')[0];
+        });
+
+        function confirmBooking() {
+            const bookingDate = document.getElementById('bookingDate').value;
+            if (!bookingDate) {
+                alert('Please select a travel date');
+                return;
+            }
+
+            // Here you would typically send data to a server
+            alert(`Booking confirmed for ${bookingDate}!`);
+            // window.location.href = 'success.html'; // Redirect to success page
+        }
+    </script>
+</body>
+</html>

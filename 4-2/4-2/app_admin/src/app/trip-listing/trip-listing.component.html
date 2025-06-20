@@ -1,0 +1,7 @@
+<div class="row">
+  <div *ngIf="isLoggedIn()">
+    <div *ngFor="let trip of trips" class="col-md-4 mb-4">
+      <app-trip-card [trip]="trip"></app-trip-card>
+    </div>
+  </div>
+</div>

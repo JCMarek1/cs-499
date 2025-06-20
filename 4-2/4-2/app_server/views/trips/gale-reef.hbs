@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Gale Reef - Bhaccasyoniztas Resort</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div id="background">
+        <div id="page">
+            {{> header}}
+            
+            <div id="contents">
+                <div class="box">
+                    <div class="body">
+                        <h1>Gale Reef Adventure</h1>
+                        <img src="/images/reef1.jpg" alt="Colorful coral formations at Gale Reef" class="full-width">
+                        <div class="trip-details">
+                            <p>Explore vibrant coral formations in crystal-clear waters. Our signature 5-day package includes:</p>
+                            <ul>
+                                <li>Daily guided snorkeling tours</li>
+                                <li>Luxury beachfront accommodation</li>
+                                <li>All meals and equipment included</li>
+                            </ul>
+
+                            <div class="booking-options">
+                                <h2>Customize Your Package</h2>
+                                
+                                <div class="option-group">
+                                    <h3>Accommodation Type</h3>
+                                    <select class="room-choice">
+                                        <option value="standard">Deluxe</option>
+                                        <option value="deluxe">Suite</option>
+                                        <option value="villa">First Class</option>
+                                    </select>
+                                </div>
+
+                                <div class="option-group">
+                                    <h3>Meal Plan</h3>
+                                    <div class="meal-choices">
+                                        <label>
+                                            <input type="checkbox" name="meal" value="breakfast"> Daily Breakfast
+                                        </label>
+                                        <label>
+                                            <input type="checkbox" name="meal" value="dinner"> Gourmet Dinner Package
+                                        </label>
+                                        <label>
+                                            <input type="checkbox" name="meal" value="snorkel-lunch"> Snorkeler's Lunch Basket
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="option-group">
+                                    <h3>Additional Options</h3>
+                                    <label>
+                                        <input type="checkbox" name="spa"> Spa Package (+$199)
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" name="photography"> Underwater Photography Session (+$299)
+                                    </label>
+                                </div>
+
+                                <button class="checkout-button">Proceed to Checkout</button>
+                            </div>
+
+                            <a href="/travel" class="back-button">← Back to All Trips</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{> footer}}
+        </div>
+    </div>
+</body>
+</html>
